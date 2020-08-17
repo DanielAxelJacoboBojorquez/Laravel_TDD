@@ -10,6 +10,17 @@ class PostManagementTest extends TestCase
 {
     use RefreshDatabase;
     /** @test */
+    public function list_of_posts_can_be_retrieved(){
+        $this->withoutExceptionHandling();
+        factory(Post::class, 3)->create();
+        $response = $this->get('/posts');
+        $response->assertOK();
+        $posts = Post::all();
+        $response->assertViewIs('posts.index');
+        $response->assertViewHas('posts', $posts);
+    }
+
+    /** @test */
     public function a_post_can_be_created(){
         $this->withoutExceptionHandling();
         $response = $this->post('/posts', [
@@ -24,4 +35,5 @@ class PostManagementTest extends TestCase
         $this->assertEquals($post->title, 'test title');
         $this->assertEquals($post->content, 'test content');
     }
+
 }
