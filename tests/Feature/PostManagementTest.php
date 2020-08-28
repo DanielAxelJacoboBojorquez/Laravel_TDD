@@ -21,6 +21,17 @@ class PostManagementTest extends TestCase
     }
 
     /** @test */
+    public function a_post_can_be_retrieved(){
+        $this->withoutExceptionHandling();
+        $post = factory(Post::class)->create();
+        $response = $this->get('/posts/'.$post->id);
+        $response->assertOK();
+        $post = Post::first();
+        $response->assertViewIs('posts.show');
+        $response->assertViewHas('post', $post);
+    }
+
+    /** @test */
     public function a_post_can_be_created(){
         $this->withoutExceptionHandling();
         $response = $this->post('/posts', [

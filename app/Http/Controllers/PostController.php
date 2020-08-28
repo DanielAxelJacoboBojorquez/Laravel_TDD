@@ -11,6 +11,11 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
+    public function show(Post $post)
+    {
+        return view('posts.show', compact('post'));
+    }
+
     public function store(){
         $data = request()->validate([
             'title' => '',
